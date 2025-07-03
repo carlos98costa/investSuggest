@@ -32,10 +32,23 @@ export async function analyzeInvestment(input: AnalyzeInvestmentInput): Promise<
   return analyzeInvestmentFlow(input);
 }
 
+// Define schemas for cleaned data to make it easier to use in prompts.
+const CleanQuoteSchema = z.object({
+    symbol: z.string().optional(),
+    price: z.string().optional(),
+    previousClose: z.string().optional(),
+    change: z.string().optional(),
+    changePercent: z.string().optional(),
+    volume: z.string().optional(),
+});
+
 const PromptInputSchema = z.object({
     locale: z.string(),
-    overview: CompanyOverviewSchema,
-    quote: GlobalQuoteSchema.shape['Global Quote']
+    overview: CompanyOverviewSchema.extend({
+        week52High: z.string().optional(),
+        week52Low: z.string().optional(),
+    }),
+    quote: CleanQuoteSchema
 });
 
 const prompt = ai.definePrompt({
@@ -55,10 +68,10 @@ const prompt = ai.definePrompt({
   - Description: {{{overview.Description}}}
 
   Real-time Quote:
-  - Current Price: {{{quote.['05. price']}}} {{{overview.Currency}}}
-  - Previous Close: {{{quote.['08. previous close']}}}
-  - Change: {{{quote.['09. change']}}} ({{{quote.['10. change percent']}}})
-  - Volume: {{{quote.['06. volume']}}}
+  - Current Price: {{{quote.price}}} {{{overview.Currency}}}
+  - Previous Close: {{{quote.previousClose}}}
+  - Change: {{{quote.change}}} ({{{quote.changePercent}}})
+  - Volume: {{{quote.volume}}}
 
   Fundamental Data:
   - Market Capitalization: {{{overview.MarketCapitalization}}}
@@ -68,8 +81,8 @@ const prompt = ai.definePrompt({
   - Dividend Yield: {{{overview.DividendYield}}}
   - Return on Equity (ROE): {{{overview.ReturnOnEquityTTM}}}
   - EBITDA: {{{overview.EBITDA}}}
-  - 52 Week High: {{{overview.['52WeekHigh']}}}
-  - 52 Week Low: {{{overview.['52WeekLow']}}}
+  - 52 Week High: {{{overview.week52High}}}
+  - 52 Week Low: {{{overview.week52Low}}}
 
   Follow these guidelines for the analysis:
   - Based on all the provided data, provide a detailed analysis covering the company's business model, market leadership, financial health, and growth prospects.
@@ -98,10 +111,27 @@ const analyzeInvestmentFlow = ai.defineFlow(
       throw new Error(`Could not retrieve financial data for ${input.tickerSymbol}. The symbol might be invalid or the API limit may have been reached.`);
     }
     
+    const rawQuote = financialData.quote['Global Quote'];
+    const cleanQuote = {
+        symbol: rawQuote['01. symbol'],
+        price: rawQuote['05. price'],
+        previousClose: rawQuote['08. previous close'],
+        change: rawQuote['09. change'],
+        changePercent: rawQuote['10. change percent'],
+        volume: rawQuote['06. volume'],
+    };
+
+    const rawOverview = financialData.overview;
+    const cleanOverview = {
+        ...rawOverview,
+        week52High: rawOverview['52WeekHigh'],
+        week52Low: rawOverview['52WeekLow'],
+    };
+
     const { output } = await prompt({
         locale: input.locale,
-        overview: financialData.overview,
-        quote: financialData.quote['Global Quote'],
+        overview: cleanOverview,
+        quote: cleanQuote,
     });
     return output!;
   }
