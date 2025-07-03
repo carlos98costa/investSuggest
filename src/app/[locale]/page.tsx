@@ -6,16 +6,25 @@ import { useTranslations } from 'next-intl';
 
 import InvestmentFilters from "@/components/investment-filters";
 import SuggestionCard from "@/components/suggestion-card";
+import AnalysisResultCard from "@/components/analysis-result-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { GenerateInvestmentSuggestionsOutput } from "@/ai/flows/generate-investment-suggestions";
+import type { AnalyzeInvestmentOutput } from "@/ai/flows/analyze-investment";
 import { Card, CardContent } from "@/components/ui/card";
 import LanguageSwitcher from "@/components/language-switcher";
 
 export default function Home() {
   const [suggestions, setSuggestions] = useState<GenerateInvestmentSuggestionsOutput['suggestions']>([]);
+  const [analysis, setAnalysis] = useState<AnalyzeInvestmentOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const t = useTranslations('HomePage');
+
+  const clearResults = () => {
+    setSuggestions([]);
+    setAnalysis(null);
+    setError(null);
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -30,18 +39,20 @@ export default function Home() {
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
             {t('title')}
           </h1>
-          <p className="mt-3 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="mt-3 text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
             {t('subtitle')}
           </p>
         </header>
 
         <InvestmentFilters
           setSuggestions={setSuggestions}
+          setAnalysis={setAnalysis}
           setIsLoading={setIsLoading}
           setError={setError}
+          clearResults={clearResults}
         />
 
-        <div className="mt-8">
+        <div className="mt-8 max-w-4xl mx-auto">
           {isLoading && (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {[...Array(3)].map((_, i) => (
@@ -73,8 +84,12 @@ export default function Home() {
               ))}
             </div>
           )}
+          
+          {!isLoading && !error && analysis && (
+            <AnalysisResultCard analysis={analysis} />
+          )}
 
-          {!isLoading && !error && suggestions.length === 0 && (
+          {!isLoading && !error && suggestions.length === 0 && !analysis && (
             <Card className="w-full">
               <CardContent className="text-center py-16">
                   <div className="inline-block bg-primary/10 p-4 rounded-full mb-4">

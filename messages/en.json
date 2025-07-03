@@ -5,15 +5,17 @@
   },
   "HomePage": {
     "title": "InvestSuggest",
-    "subtitle": "AI-powered insights to fuel your investment strategy. Filter by your preferences and get tailored suggestions.",
+    "subtitle": "AI-powered insights to fuel your investment strategy. Filter for suggestions or analyze a specific asset.",
     "errorOccurred": "An error occurred",
     "readyForIdeasTitle": "Ready for Investment Ideas?",
-    "readyForIdeasSubtitle": "Select your criteria above and click \"Get Suggestions\" to start.",
+    "readyForIdeasSubtitle": "Select your criteria above and get started.",
     "disclaimer": "<strong>Disclaimer:</strong> The information provided by InvestSuggest is for informational purposes only and does not constitute financial advice, investment advice, or any other sort of advice. You should not treat any of the content as such. Investing involves risk, and you should conduct your own research or consult with a professional financial advisor before making any investment decisions."
   },
   "InvestmentFilters": {
     "cardTitle": "Investment Filters",
-    "cardDescription": "Tell us your preferences, and our AI will find opportunities for you.",
+    "cardDescription": "Select a mode below to either get tailored suggestions or analyze a specific asset.",
+    "suggestionsTab": "Suggestions",
+    "analysisTab": "Analysis",
     "assetTypeLabel": "Asset Type",
     "assetTypePlaceholder": "Select an asset type",
     "assetTypeStocks": "Stocks",
@@ -27,12 +29,24 @@
     "riskLevelHigh": "High",
     "sectorLabel": "Sector (Optional)",
     "sectorPlaceholder": "e.g., Technology, Healthcare, Energy",
-    "submitButton": "Get Suggestions",
-    "toastErrorTitle": "Error Generating Suggestions",
-    "noSuggestionsError": "The AI returned no suggestions for these criteria. Please try a different combination."
+    "tickerLabel": "Ticker Symbol",
+    "tickerPlaceholder": "e.g., GOOGL, AAPL, MSFT",
+    "submitButtonSuggestions": "Get Suggestions",
+    "submitButtonAnalysis": "Analyze Investment",
+    "toastErrorTitle": "Error",
+    "noSuggestionsError": "The AI returned no suggestions for these criteria. Please try a different combination.",
+    "noAnalysisError": "The AI could not analyze this ticker. Please check the symbol and try again."
   },
   "SuggestionCard": {
     "aiRationale": "AI Rationale",
+    "buy": "Buy",
+    "sell": "Sell",
+    "hold": "Hold"
+  },
+  "AnalysisResultCard": {
+    "aiAnalysis": "AI Analysis",
+    "pros": "Pros",
+    "cons": "Cons",
     "buy": "Buy",
     "sell": "Sell",
     "hold": "Hold"
