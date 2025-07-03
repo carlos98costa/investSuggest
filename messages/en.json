@@ -19,6 +19,7 @@
     "assetTypeLabel": "Asset Type",
     "assetTypePlaceholder": "Select an asset type",
     "assetTypeStocks": "Stocks",
+    "assetTypeCrypto": "Cryptocurrencies",
     "assetTypeCurrencies": "Currencies",
     "assetTypeFunds": "Funds",
     "assetTypeFixedIncome": "Fixed Income",

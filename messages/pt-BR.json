@@ -19,6 +19,7 @@
     "assetTypeLabel": "Tipo de Ativo",
     "assetTypePlaceholder": "Selecione um tipo de ativo",
     "assetTypeStocks": "Ações",
+    "assetTypeCrypto": "Criptomoedas",
     "assetTypeCurrencies": "Moedas",
     "assetTypeFunds": "Fundos",
     "assetTypeFixedIncome": "Renda Fixa",
