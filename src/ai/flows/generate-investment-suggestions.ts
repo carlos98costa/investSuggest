@@ -15,6 +15,7 @@ const GenerateInvestmentSuggestionsInputSchema = z.object({
   assetType: z.string().describe('The type of asset to generate suggestions for (e.g., stocks, currencies, funds, fixed income).'),
   riskLevel: z.string().describe('The risk level for the investment suggestions (e.g., low, medium, high).'),
   sector: z.string().describe('The sector to focus the investment suggestions on (e.g., technology, healthcare, energy).').optional(),
+  locale: z.string().describe('The language for the output, specified as a BCP 47 language tag (e.g., en, pt-BR).'),
 });
 export type GenerateInvestmentSuggestionsInput = z.infer<typeof GenerateInvestmentSuggestionsInputSchema>;
 
@@ -23,7 +24,7 @@ const GenerateInvestmentSuggestionsOutputSchema = z.object({
     z.object({
       assetName: z.string().describe('The name of the asset.'),
       tickerSymbol: z.string().describe('The ticker symbol of the asset.'),
-      recommendation: z.string().describe('The AI recommendation for the asset (e.g., buy, sell, hold).'),
+      recommendation: z.string().describe('The AI recommendation for the asset. Must be one of "buy", "sell", or "hold".'),
       rationale: z.string().describe('The rationale behind the recommendation, including key financial metrics.'),
     })
   ).describe('A list of investment suggestions based on the provided criteria.'),
@@ -45,9 +46,12 @@ const prompt = ai.definePrompt({
   Asset Type: {{{assetType}}}
   Risk Level: {{{riskLevel}}}
   Sector: {{#if sector}}{{{sector}}}{{else}}Any{{/if}}
+  Language for response: {{{locale}}}
 
   Follow these guidelines when creating the suggestions:
-  - Provide a list of investment suggestions with the asset name, ticker symbol, recommendation (buy, sell, hold), and rationale.
+  - Provide a list of investment suggestions with the asset name, ticker symbol, recommendation, and rationale.
+  - The 'recommendation' field MUST be one of 'buy', 'sell', or 'hold'. Do not translate this field.
+  - The 'rationale' field MUST be written in the language specified by the 'Language for response' field above.
   - The rationale should include key financial metrics such as P/L, P/VP, and Dividend Yield.
   - Ensure that the suggestions align with the specified asset type, risk level, and sector (if provided).
   - Emphasize that these are not personalized investment advice and that investing involves risks.

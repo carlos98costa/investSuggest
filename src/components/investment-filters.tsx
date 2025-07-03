@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { BarChart, ShieldCheck, BriefcaseBusiness, Loader2, Wand2 } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -42,6 +42,7 @@ interface InvestmentFiltersProps {
 
 export default function InvestmentFilters({ setSuggestions, setIsLoading, setError }: InvestmentFiltersProps) {
   const t = useTranslations('InvestmentFilters');
+  const locale = useLocale();
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -57,7 +58,7 @@ export default function InvestmentFilters({ setSuggestions, setIsLoading, setErr
     setError(null);
     setSuggestions([]);
     try {
-      const result = await getInvestmentSuggestions(values);
+      const result = await getInvestmentSuggestions({ ...values, locale });
       if (result && result.suggestions && result.suggestions.length > 0) {
         setSuggestions(result.suggestions);
       } else {

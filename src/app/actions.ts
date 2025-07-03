@@ -10,6 +10,7 @@ const formSchema = z.object({
   assetType: z.string().min(1, 'Asset type is required.'),
   riskLevel: z.string().min(1, 'Risk level is required.'),
   sector: z.string().optional(),
+  locale: z.string(),
 });
 
 export async function getInvestmentSuggestions(formData: GenerateInvestmentSuggestionsInput) {
