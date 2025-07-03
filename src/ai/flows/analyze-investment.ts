@@ -151,8 +151,8 @@ const analyzeInvestmentFlow = ai.defineFlow(
     const cleanedData = {
         locale: input.locale,
         // Overview
-        assetName: financialData.overview.Name,
-        tickerSymbol: financialData.overview.Symbol,
+        assetName: financialData.overview.Name ?? 'N/A',
+        tickerSymbol: financialData.overview.Symbol ?? 'N/A',
         exchange: financialData.overview.Exchange ?? 'N/A',
         sector: financialData.overview.Sector ?? 'N/A',
         industry: financialData.overview.Industry ?? 'N/A',
