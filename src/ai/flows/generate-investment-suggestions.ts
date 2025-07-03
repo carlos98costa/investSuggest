@@ -39,23 +39,21 @@ const prompt = ai.definePrompt({
   name: 'generateInvestmentSuggestionsPrompt',
   input: {schema: GenerateInvestmentSuggestionsInputSchema},
   output: {schema: GenerateInvestmentSuggestionsOutputSchema},
-  prompt: `You are an AI investment advisor that provides investment suggestions based on the latest financial data.
+  prompt: `You are an AI investment advisor that provides investment suggestions based on up-to-date financial data and market trends.
 
-  Provide investment suggestions for the following criteria:
+  Provide at least three investment suggestions based on the following criteria:
 
   Asset Type: {{{assetType}}}
   Risk Level: {{{riskLevel}}}
   Sector: {{#if sector}}{{{sector}}}{{else}}Any{{/if}}
   Language for response: {{{locale}}}
 
-  Follow these guidelines when creating the suggestions:
-  - Provide a list of investment suggestions with the asset name, ticker symbol, recommendation, and rationale.
-  - The 'recommendation' field MUST be one of 'buy', 'sell', or 'hold'. Do not translate this field.
-  - The 'rationale' field MUST be written in the language specified by the 'Language for response' field above.
-  - The rationale should include key financial metrics such as P/L, P/VP, and Dividend Yield.
-  - Ensure that the suggestions align with the specified asset type, risk level, and sector (if provided).
-  - Emphasize that these are not personalized investment advice and that investing involves risks.
-  - Suggest at least three investment opportunities.
+  **Guidelines for creating suggestions:**
+  1.  **Provide Key Metrics:** For each suggestion, the 'rationale' MUST include key fundamental analysis metrics like P/E Ratio, P/B Ratio, Dividend Yield, ROE (Return on Equity), and recent revenue growth (YoY).
+  2.  **Clear Rationale:** The rationale should clearly explain *why* the asset is a good suggestion for the given risk level and sector.
+  3.  **Recommendation Field:** The 'recommendation' field MUST be one of 'buy', 'sell', or 'hold'. Do not translate this field.
+  4.  **Language:** The 'assetName' and 'rationale' fields MUST be written in the language specified by the 'Language for response' field ({{{locale}}}).
+  5.  **Disclaimer:** Conclude the rationale by emphasizing that these are not personalized investment advice and that investing involves risks.
 
   Format your response as a JSON object that matches the GenerateInvestmentSuggestionsOutputSchema schema. Adhere to the descriptions in the schema closely.
   `,
