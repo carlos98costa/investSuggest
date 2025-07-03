@@ -1,6 +1,7 @@
 "use client";
 
 import { TrendingUp, TrendingDown, Minus, BrainCircuit } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -22,6 +23,7 @@ interface SuggestionCardProps {
 }
 
 export default function SuggestionCard({ suggestion }: SuggestionCardProps) {
+  const t = useTranslations('SuggestionCard');
   const { assetName, tickerSymbol, recommendation, rationale } = suggestion;
 
   const getRecommendationStyle = (rec: string) => {
@@ -48,7 +50,15 @@ export default function SuggestionCard({ suggestion }: SuggestionCardProps) {
     }
   };
 
+  const getRecommendationKey = (rec: string): 'buy' | 'sell' | 'hold' => {
+    const lowerRec = rec.toLowerCase();
+    if (lowerRec === 'buy') return 'buy';
+    if (lowerRec === 'sell') return 'sell';
+    return 'hold';
+  };
+
   const recommendationStyle = getRecommendationStyle(recommendation);
+  const localizedRecommendation = t(getRecommendationKey(recommendation));
 
   return (
     <Card className="flex flex-col h-full bg-secondary/30 hover:border-primary/50 transition-all duration-300">
@@ -60,7 +70,7 @@ export default function SuggestionCard({ suggestion }: SuggestionCardProps) {
             </div>
             <Badge variant={recommendationStyle.variant} className={`${recommendationStyle.className} gap-1 shrink-0`}>
                 {recommendationStyle.icon}
-                <span>{recommendation}</span>
+                <span>{localizedRecommendation}</span>
             </Badge>
         </div>
       </CardHeader>
@@ -69,7 +79,7 @@ export default function SuggestionCard({ suggestion }: SuggestionCardProps) {
         <div className="space-y-4">
           <h4 className="flex items-center font-semibold text-base">
             <BrainCircuit className="mr-2 h-5 w-5 text-accent" />
-            AI Rationale
+            {t('aiRationale')}
           </h4>
           <p className="text-muted-foreground text-sm leading-relaxed">
             {rationale}

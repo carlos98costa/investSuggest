@@ -1,0 +1,45 @@
+{
+  "Metadata": {
+    "title": "InvestSuggest",
+    "description": "AI-powered investment suggestions to guide your financial decisions."
+  },
+  "HomePage": {
+    "title": "InvestSuggest",
+    "subtitle": "AI-powered insights to fuel your investment strategy. Filter by your preferences and get tailored suggestions.",
+    "errorOccurred": "An error occurred",
+    "readyForIdeasTitle": "Ready for Investment Ideas?",
+    "readyForIdeasSubtitle": "Select your criteria above and click \"Get Suggestions\" to start.",
+    "disclaimer": "<strong>Disclaimer:</strong> The information provided by InvestSuggest is for informational purposes only and does not constitute financial advice, investment advice, or any other sort of advice. You should not treat any of the content as such. Investing involves risk, and you should conduct your own research or consult with a professional financial advisor before making any investment decisions."
+  },
+  "InvestmentFilters": {
+    "cardTitle": "Investment Filters",
+    "cardDescription": "Tell us your preferences, and our AI will find opportunities for you.",
+    "assetTypeLabel": "Asset Type",
+    "assetTypePlaceholder": "Select an asset type",
+    "assetTypeStocks": "Stocks",
+    "assetTypeCurrencies": "Currencies",
+    "assetTypeFunds": "Funds",
+    "assetTypeFixedIncome": "Fixed Income",
+    "riskLevelLabel": "Risk Level",
+    "riskLevelPlaceholder": "Select a risk level",
+    "riskLevelLow": "Low",
+    "riskLevelMedium": "Medium",
+    "riskLevelHigh": "High",
+    "sectorLabel": "Sector (Optional)",
+    "sectorPlaceholder": "e.g., Technology, Healthcare, Energy",
+    "submitButton": "Get Suggestions",
+    "toastErrorTitle": "Error Generating Suggestions",
+    "noSuggestionsError": "The AI returned no suggestions for these criteria. Please try a different combination."
+  },
+  "SuggestionCard": {
+    "aiRationale": "AI Rationale",
+    "buy": "Buy",
+    "sell": "Sell",
+    "hold": "Hold"
+  },
+  "LanguageSwitcher": {
+    "label": "Language",
+    "en": "English",
+    "pt": "Portuguese (BR)"
+  }
+}

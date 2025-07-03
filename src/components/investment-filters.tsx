@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { BarChart, ShieldCheck, BriefcaseBusiness, Loader2, Wand2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -40,6 +41,7 @@ interface InvestmentFiltersProps {
 }
 
 export default function InvestmentFilters({ setSuggestions, setIsLoading, setError }: InvestmentFiltersProps) {
+  const t = useTranslations('InvestmentFilters');
   const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -59,14 +61,14 @@ export default function InvestmentFilters({ setSuggestions, setIsLoading, setErr
       if (result && result.suggestions && result.suggestions.length > 0) {
         setSuggestions(result.suggestions);
       } else {
-        setError("The AI returned no suggestions for these criteria. Please try a different combination.");
+        setError(t('noSuggestionsError'));
       }
     } catch (e) {
       const errorMsg = e instanceof Error ? e.message : "An unknown error occurred.";
       setError(errorMsg);
       toast({
         variant: "destructive",
-        title: "Error Generating Suggestions",
+        title: t('toastErrorTitle'),
         description: errorMsg,
       });
     } finally {
@@ -77,9 +79,9 @@ export default function InvestmentFilters({ setSuggestions, setIsLoading, setErr
   return (
     <Card className="max-w-4xl mx-auto">
       <CardHeader>
-        <CardTitle>Investment Filters</CardTitle>
+        <CardTitle>{t('cardTitle')}</CardTitle>
         <CardDescription>
-          Tell us your preferences, and our AI will find opportunities for you.
+          {t('cardDescription')}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -91,18 +93,18 @@ export default function InvestmentFilters({ setSuggestions, setIsLoading, setErr
                 name="assetType"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="flex items-center"><BarChart className="mr-2 h-4 w-4" />Asset Type</FormLabel>
+                    <FormLabel className="flex items-center"><BarChart className="mr-2 h-4 w-4" />{t('assetTypeLabel')}</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select an asset type" />
+                          <SelectValue placeholder={t('assetTypePlaceholder')} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="stocks">Stocks</SelectItem>
-                        <SelectItem value="currencies">Currencies</SelectItem>
-                        <SelectItem value="funds">Funds</SelectItem>
-                        <SelectItem value="fixed income">Fixed Income</SelectItem>
+                        <SelectItem value="stocks">{t('assetTypeStocks')}</SelectItem>
+                        <SelectItem value="currencies">{t('assetTypeCurrencies')}</SelectItem>
+                        <SelectItem value="funds">{t('assetTypeFunds')}</SelectItem>
+                        <SelectItem value="fixed income">{t('assetTypeFixedIncome')}</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -114,17 +116,17 @@ export default function InvestmentFilters({ setSuggestions, setIsLoading, setErr
                 name="riskLevel"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="flex items-center"><ShieldCheck className="mr-2 h-4 w-4" />Risk Level</FormLabel>
+                    <FormLabel className="flex items-center"><ShieldCheck className="mr-2 h-4 w-4" />{t('riskLevelLabel')}</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select a risk level" />
+                          <SelectValue placeholder={t('riskLevelPlaceholder')} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="low">Low</SelectItem>
-                        <SelectItem value="medium">Medium</SelectItem>
-                        <SelectItem value="high">High</SelectItem>
+                        <SelectItem value="low">{t('riskLevelLow')}</SelectItem>
+                        <SelectItem value="medium">{t('riskLevelMedium')}</SelectItem>
+                        <SelectItem value="high">{t('riskLevelHigh')}</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -137,9 +139,9 @@ export default function InvestmentFilters({ setSuggestions, setIsLoading, setErr
               name="sector"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="flex items-center"><BriefcaseBusiness className="mr-2 h-4 w-4" />Sector (Optional)</FormLabel>
+                  <FormLabel className="flex items-center"><BriefcaseBusiness className="mr-2 h-4 w-4" />{t('sectorLabel')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., Technology, Healthcare, Energy" {...field} />
+                    <Input placeholder={t('sectorPlaceholder')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -152,7 +154,7 @@ export default function InvestmentFilters({ setSuggestions, setIsLoading, setErr
                 ) : (
                   <Wand2 className="mr-2 h-4 w-4" />
                 )}
-                Get Suggestions
+                {t('submitButton')}
               </Button>
             </div>
           </form>

@@ -1,0 +1,45 @@
+{
+  "Metadata": {
+    "title": "InvestSuggest",
+    "description": "Sugestões de investimento com IA para guiar suas decisões financeiras."
+  },
+  "HomePage": {
+    "title": "InvestSuggest",
+    "subtitle": "Insights com IA para impulsionar sua estratégia de investimento. Filtre por suas preferências e obtenha sugestões personalizadas.",
+    "errorOccurred": "Ocorreu um erro",
+    "readyForIdeasTitle": "Pronto para Ideias de Investimento?",
+    "readyForIdeasSubtitle": "Selecione seus critérios acima e clique em \"Obter Sugestões\" para começar.",
+    "disclaimer": "<strong>Aviso Legal:</strong> As informações fornecidas pela InvestSuggest são apenas para fins informativos e não constituem aconselhamento financeiro, de investimento ou qualquer outro tipo de aconselhamento. Você não deve tratar nenhum conteúdo como tal. Investir envolve riscos e você deve conduzir sua própria pesquisa ou consultar um consultor financeiro profissional antes de tomar qualquer decisão de investimento."
+  },
+  "InvestmentFilters": {
+    "cardTitle": "Filtros de Investimento",
+    "cardDescription": "Diga-nos suas preferências e nossa IA encontrará oportunidades para você.",
+    "assetTypeLabel": "Tipo de Ativo",
+    "assetTypePlaceholder": "Selecione um tipo de ativo",
+    "assetTypeStocks": "Ações",
+    "assetTypeCurrencies": "Moedas",
+    "assetTypeFunds": "Fundos",
+    "assetTypeFixedIncome": "Renda Fixa",
+    "riskLevelLabel": "Nível de Risco",
+    "riskLevelPlaceholder": "Selecione um nível de risco",
+    "riskLevelLow": "Baixo",
+    "riskLevelMedium": "Médio",
+    "riskLevelHigh": "Alto",
+    "sectorLabel": "Setor (Opcional)",
+    "sectorPlaceholder": "ex: Tecnologia, Saúde, Energia",
+    "submitButton": "Obter Sugestões",
+    "toastErrorTitle": "Erro ao Gerar Sugestões",
+    "noSuggestionsError": "A IA não retornou sugestões para estes critérios. Por favor, tente uma combinação diferente."
+  },
+  "SuggestionCard": {
+    "aiRationale": "Justificativa da IA",
+    "buy": "Comprar",
+    "sell": "Vender",
+    "hold": "Manter"
+  },
+  "LanguageSwitcher": {
+    "label": "Idioma",
+    "en": "Inglês",
+    "pt": "Português (BR)"
+  }
+}
