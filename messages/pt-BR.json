@@ -13,9 +13,10 @@
   },
   "InvestmentFilters": {
     "cardTitle": "Filtros de Investimento",
-    "cardDescription": "Selecione um modo abaixo para obter sugestões personalizadas ou analisar um ativo específico.",
+    "cardDescription": "Selecione um modo abaixo para obter sugestões, analisar um ativo ou criar uma carteira.",
     "suggestionsTab": "Sugestões",
     "analysisTab": "Análise",
+    "portfolioTab": "Carteira",
     "assetTypeLabel": "Tipo de Ativo",
     "assetTypePlaceholder": "Selecione um tipo de ativo",
     "assetTypeStocks": "Ações",
@@ -32,11 +33,15 @@
     "sectorPlaceholder": "ex: Tecnologia, Saúde, Energia",
     "tickerLabel": "Símbolo do Ticker",
     "tickerPlaceholder": "ex: GOOGL, AAPL, MSFT",
+    "investmentAmountLabel": "Valor do Investimento",
+    "investmentAmountPlaceholder": "ex: 10000",
     "submitButtonSuggestions": "Obter Sugestões",
     "submitButtonAnalysis": "Analisar Investimento",
+    "submitButtonPortfolio": "Criar Carteira",
     "toastErrorTitle": "Erro",
     "noSuggestionsError": "A IA não retornou sugestões para estes critérios. Por favor, tente uma combinação diferente.",
-    "noAnalysisError": "A IA não conseguiu analisar este ticker. Por favor, verifique o símbolo e tente novamente."
+    "noAnalysisError": "A IA não conseguiu analisar este ticker. Por favor, verifique o símbolo e tente novamente.",
+    "noPortfolioError": "A IA não conseguiu gerar uma carteira para estes critérios. Por favor, tente uma combinação diferente."
   },
   "SuggestionCard": {
     "aiRationale": "Justificativa da IA",
@@ -51,6 +56,16 @@
     "buy": "Comprar",
     "sell": "Vender",
     "hold": "Manter"
+  },
+  "PortfolioResultCard": {
+    "aiPortfolioSuggestion": "Sugestão de Carteira da IA",
+    "summary": "Resumo da Estratégia",
+    "assetAllocation": "Alocação de Ativos",
+    "asset": "Ativo",
+    "ticker": "Ticker",
+    "allocation": "Alocação",
+    "rationale": "Justificativa",
+    "assetType": "Tipo de Ativo"
   },
   "LanguageSwitcher": {
     "label": "Idioma",

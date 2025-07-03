@@ -7,15 +7,18 @@ import { useTranslations } from 'next-intl';
 import InvestmentFilters from "@/components/investment-filters";
 import SuggestionCard from "@/components/suggestion-card";
 import AnalysisResultCard from "@/components/analysis-result-card";
+import PortfolioResultCard from "@/components/portfolio-result-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { GenerateInvestmentSuggestionsOutput } from "@/ai/flows/generate-investment-suggestions";
 import type { AnalyzeInvestmentOutput } from "@/ai/flows/analyze-investment";
+import type { GeneratePortfolioSuggestionOutput } from "@/ai/flows/generate-portfolio-suggestion";
 import { Card, CardContent } from "@/components/ui/card";
 import LanguageSwitcher from "@/components/language-switcher";
 
 export default function Home() {
   const [suggestions, setSuggestions] = useState<GenerateInvestmentSuggestionsOutput['suggestions']>([]);
   const [analysis, setAnalysis] = useState<AnalyzeInvestmentOutput | null>(null);
+  const [portfolio, setPortfolio] = useState<GeneratePortfolioSuggestionOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const t = useTranslations('HomePage');
@@ -23,6 +26,7 @@ export default function Home() {
   const clearResults = () => {
     setSuggestions([]);
     setAnalysis(null);
+    setPortfolio(null);
     setError(null);
   };
 
@@ -47,12 +51,13 @@ export default function Home() {
         <InvestmentFilters
           setSuggestions={setSuggestions}
           setAnalysis={setAnalysis}
+          setPortfolio={setPortfolio}
           setIsLoading={setIsLoading}
           setError={setError}
           clearResults={clearResults}
         />
 
-        <div className="mt-8 max-w-4xl mx-auto">
+        <div className="mt-8 max-w-5xl mx-auto">
           {isLoading && (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {[...Array(3)].map((_, i) => (
@@ -89,7 +94,11 @@ export default function Home() {
             <AnalysisResultCard analysis={analysis} />
           )}
 
-          {!isLoading && !error && suggestions.length === 0 && !analysis && (
+          {!isLoading && !error && portfolio && (
+            <PortfolioResultCard portfolio={portfolio} />
+          )}
+
+          {!isLoading && !error && suggestions.length === 0 && !analysis && !portfolio && (
             <Card className="w-full">
               <CardContent className="text-center py-16">
                   <div className="inline-block bg-primary/10 p-4 rounded-full mb-4">

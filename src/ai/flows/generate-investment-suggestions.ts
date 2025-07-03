@@ -39,38 +39,29 @@ const prompt = ai.definePrompt({
   name: 'generateInvestmentSuggestionsPrompt',
   input: {schema: GenerateInvestmentSuggestionsInputSchema},
   output: {schema: GenerateInvestmentSuggestionsOutputSchema},
-  prompt: `You are an AI investment advisor that provides investment suggestions based on up-to-date financial data and market trends.
+  prompt: `You are an expert AI investment advisor. Your goal is to provide high-quality, data-driven investment suggestions based on up-to-date financial data and market trends.
 
-  Provide at least three investment suggestions based on the following criteria:
+  Generate exactly three investment suggestions based on the following criteria:
 
   Asset Type: {{{assetType}}}
   Risk Level: {{{riskLevel}}}
   Sector: {{#if sector}}{{{sector}}}{{else}}Any{{/if}}
   Language for response: {{{locale}}}
 
-<<<<<<< HEAD
-  **Guidelines for creating suggestions:**
-  1.  **Provide Key Metrics:** For each suggestion, the 'rationale' MUST include key fundamental analysis metrics like P/E Ratio, P/B Ratio, Dividend Yield, ROE (Return on Equity), and recent revenue growth (YoY).
-  2.  **Clear Rationale:** The rationale should clearly explain *why* the asset is a good suggestion for the given risk level and sector.
-  3.  **Recommendation Field:** The 'recommendation' field MUST be one of 'buy', 'sell', or 'hold'. Do not translate this field.
-  4.  **Language:** The 'assetName' and 'rationale' fields MUST be written in the language specified by the 'Language for response' field ({{{locale}}}).
-  5.  **Disclaimer:** Conclude the rationale by emphasizing that these are not personalized investment advice and that investing involves risks.
-=======
-  Follow these guidelines when creating the suggestions:
-  - Provide a list of investment suggestions with the asset name, ticker symbol, recommendation, and rationale.
-  - The 'recommendation' field MUST be one of 'buy', 'sell', or 'hold'. Do not translate this field.
-  - The 'rationale' field MUST be written in the language specified by the 'Language for response' field above.
-  - Ensure that the suggestions align with the specified asset type, risk level, and sector (if provided).
-  - Emphasize that these are not personalized investment advice and that investing involves risks.
-  - Suggest at least three investment opportunities.
->>>>>>> 59f0772 (Adicione também criptomoedas nas sugestões)
+  **CRITICAL INSTRUCTIONS**:
+  1.  **Recommendation:** The 'recommendation' field MUST be one of 'buy', 'sell', or 'hold'. DO NOT TRANSLATE this value.
+  2.  **Rationale Language:** ALL text in the 'rationale' field MUST be in the requested language: {{{locale}}}.
+  3.  **Data-Driven Rationale:** The 'rationale' for each suggestion must be concise (2-3 sentences) but packed with specific, plausible data points and metrics relevant to the asset type. Do not use vague statements.
 
-  The content of the rationale depends on the Asset Type:
-  - If the Asset Type is "stocks", "funds", or "fixed income", the rationale MUST include a mix of fundamental analysis metrics such as P/E Ratio, P/B Ratio, Dividend Yield, ROE (Return on Equity), and EBITDA.
-  - If the Asset Type is "crypto", the rationale MUST include information relevant to that asset class, such as project fundamentals, tokenomics, market capitalization, and recent performance.
-  - If the Asset Type is "currencies", the rationale should include economic factors like interest rates, inflation, and geopolitical events.
+  **Rationale Content Guidelines by Asset Type:**
+  -   **Stocks, Funds, Fixed Income:** The rationale MUST include at least three of the following metrics: P/E Ratio, P/B Ratio, Dividend Yield, ROE (Return on Equity), EBITDA, recent revenue growth, or debt-to-equity ratio.
+      *Example Rationale (for a 'buy' recommendation):* "With a low P/E ratio of 15 and a strong ROE of 22%, the company shows significant value. Recent quarterly earnings grew by 18%, and its Dividend Yield of 3.5% provides stable returns."
+  -   **Cryptocurrencies:** The rationale MUST include metrics relevant to crypto, such as market capitalization, recent performance (e.g., 30-day change), project fundamentals (e.g., technology, adoption rate), or tokenomics (e.g., supply schedule).
+      *Example Rationale (for a 'buy' recommendation):* "The project has a solid market cap of $5B and has seen a 40% price increase in the last 60 days. Its recent mainnet upgrade successfully increased transaction speed, driving developer adoption."
+  -   **Currencies:** The rationale MUST focus on macroeconomic factors, such as central bank interest rates, inflation data, GDP growth, and significant geopolitical events impacting the currency pair.
+      *Example Rationale (for a 'buy' recommendation on USD/JPY):* "The US Federal Reserve's recent hawkish stance on interest rates contrasts with the Bank of Japan's continued dovish policy, creating a strong potential for USD appreciation. US inflation remains under control while its GDP growth is steady."
 
-  Format your response as a JSON object that matches the GenerateInvestmentSuggestionsOutputSchema schema. Adhere to the descriptions in the schema closely.
+  4.  **JSON Format:** Format your entire response as a single JSON object that strictly matches the provided output schema. Do not include any text or explanations outside of the JSON object.
   `,
 });
 

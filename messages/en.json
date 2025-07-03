@@ -13,9 +13,10 @@
   },
   "InvestmentFilters": {
     "cardTitle": "Investment Filters",
-    "cardDescription": "Select a mode below to either get tailored suggestions or analyze a specific asset.",
+    "cardDescription": "Select a mode below to get tailored suggestions, analyze an asset, or build a portfolio.",
     "suggestionsTab": "Suggestions",
     "analysisTab": "Analysis",
+    "portfolioTab": "Portfolio",
     "assetTypeLabel": "Asset Type",
     "assetTypePlaceholder": "Select an asset type",
     "assetTypeStocks": "Stocks",
@@ -32,11 +33,15 @@
     "sectorPlaceholder": "e.g., Technology, Healthcare, Energy",
     "tickerLabel": "Ticker Symbol",
     "tickerPlaceholder": "e.g., GOOGL, AAPL, MSFT",
+    "investmentAmountLabel": "Investment Amount",
+    "investmentAmountPlaceholder": "e.g., 10000",
     "submitButtonSuggestions": "Get Suggestions",
     "submitButtonAnalysis": "Analyze Investment",
+    "submitButtonPortfolio": "Build Portfolio",
     "toastErrorTitle": "Error",
     "noSuggestionsError": "The AI returned no suggestions for these criteria. Please try a different combination.",
-    "noAnalysisError": "The AI could not analyze this ticker. Please check the symbol and try again."
+    "noAnalysisError": "The AI could not analyze this ticker. Please check the symbol and try again.",
+    "noPortfolioError": "The AI could not generate a portfolio for these criteria. Please try a different combination."
   },
   "SuggestionCard": {
     "aiRationale": "AI Rationale",
@@ -51,6 +56,16 @@
     "buy": "Buy",
     "sell": "Sell",
     "hold": "Hold"
+  },
+  "PortfolioResultCard": {
+    "aiPortfolioSuggestion": "AI Portfolio Suggestion",
+    "summary": "Strategy Summary",
+    "assetAllocation": "Asset Allocation",
+    "asset": "Asset",
+    "ticker": "Ticker",
+    "allocation": "Allocation",
+    "rationale": "Rationale",
+    "assetType": "Asset Type"
   },
   "LanguageSwitcher": {
     "label": "Language",

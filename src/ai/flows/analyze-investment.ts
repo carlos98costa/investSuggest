@@ -10,11 +10,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
-<<<<<<< HEAD
-import { getCompanyOverview } from '@/services/alpha-vantage';
-=======
-import { getFinancialData, CompanyOverviewSchema, GlobalQuoteSchema } from '@/services/alpha-vantage';
->>>>>>> e51fb4d (I see this error with the app, reported by NextJS, please fix it. The er)
+import { getFinancialData } from '@/services/alpha-vantage';
 
 const AnalyzeInvestmentInputSchema = z.object({
   tickerSymbol: z.string().describe('The ticker symbol of the asset to analyze.'),
@@ -22,10 +18,47 @@ const AnalyzeInvestmentInputSchema = z.object({
 });
 export type AnalyzeInvestmentInput = z.infer<typeof AnalyzeInvestmentInputSchema>;
 
-// New prompt input schema that includes the fetched financial data.
-const AnalyzeInvestmentPromptInputSchema = AnalyzeInvestmentInputSchema.extend({
-    companyOverview: z.string().describe('A JSON string containing the company overview and financial data from a real-time API. This should be the primary source of truth for the analysis.')
+
+const ComprehensiveFinancialDataSchema = z.object({
+    locale: z.string(),
+    // From overview
+    assetName: z.string(),
+    tickerSymbol: z.string(),
+    exchange: z.string(),
+    sector: z.string(),
+    industry: z.string(),
+    description: z.string(),
+    currency: z.string(),
+    marketCap: z.string(),
+    peRatio: z.string(),
+    pbRatio: z.string(),
+    eps: z.string(),
+    dividendYield: z.string(),
+    roe: z.string(),
+    ebitda: z.string(),
+    week52High: z.string(),
+    week52Low: z.string(),
+    // From quote
+    price: z.string(),
+    previousClose: z.string(),
+    change: z.string(),
+    changePercent: z.string(),
+    volume: z.string(),
+    // From Income Statement (Latest Annual)
+    totalRevenue: z.string(),
+    grossProfit: z.string(),
+    operatingIncome: z.string(),
+    netIncome: z.string(),
+    // From Balance Sheet (Latest Annual)
+    totalAssets: z.string(),
+    totalLiabilities: z.string(),
+    shareholderEquity: z.string(),
+    // From Cash Flow (Latest Annual)
+    operatingCashflow: z.string(),
+    capitalExpenditures: z.string(),
+    freeCashFlow: z.string(),
 });
+
 
 const AnalyzeInvestmentOutputSchema = z.object({
   assetName: z.string().describe('The name of the asset.'),
@@ -41,79 +74,60 @@ export async function analyzeInvestment(input: AnalyzeInvestmentInput): Promise<
   return analyzeInvestmentFlow(input);
 }
 
-<<<<<<< HEAD
-const prompt = ai.definePrompt({
-  name: 'analyzeInvestmentPrompt',
-  input: {schema: AnalyzeInvestmentPromptInputSchema}, // Use the new extended schema
-  output: {schema: AnalyzeInvestmentOutputSchema},
-  prompt: `You are an expert AI investment analyst. Your primary task is to provide a detailed, data-driven analysis for the specified stock ticker using the real-time financial data provided.
-=======
-const PromptInputSchema = z.object({
-    locale: z.string(),
-    overview: CompanyOverviewSchema,
-    quote: GlobalQuoteSchema.shape['Global Quote']
-});
-
 const prompt = ai.definePrompt({
   name: 'analyzeInvestmentWithDataPrompt',
-  input: {schema: PromptInputSchema},
+  input: {schema: ComprehensiveFinancialDataSchema},
   output: {schema: AnalyzeInvestmentOutputSchema},
-  prompt: `You are an expert AI investment analyst. Provide a detailed analysis for the specified stock ticker using the provided real-time and fundamental data.
->>>>>>> e51fb4d (I see this error with the app, reported by NextJS, please fix it. The er)
+  prompt: `You are an expert AI investment analyst. Your task is to provide a comprehensive, data-driven analysis for the specified stock ticker using the provided real-time, fundamental, and detailed financial statement data.
 
   Language for response: {{{locale}}}
   
-  Asset Information:
-  - Company Name: {{{overview.Name}}}
-  - Ticker Symbol: {{{overview.Symbol}}}
-  - Exchange: {{{overview.Exchange}}}
-  - Sector: {{{overview.Sector}}}
-  - Industry: {{{overview.Industry}}}
-  - Description: {{{overview.Description}}}
+  ## Company & Market Information
+  - Company Name: {{{assetName}}}
+  - Ticker Symbol: {{{tickerSymbol}}}
+  - Exchange: {{{exchange}}}
+  - Sector: {{{sector}}}
+  - Industry: {{{industry}}}
+  - Description: {{{description}}}
 
-  Real-time Quote:
-  - Current Price: {{{quote.['05. price']}}} {{{overview.Currency}}}
-  - Previous Close: {{{quote.['08. previous close']}}}
-  - Change: {{{quote.['09. change']}}} ({{{quote.['10. change percent']}}})
-  - Volume: {{{quote.['06. volume']}}}
+  ## Real-Time Quote & Key Metrics
+  - Current Price: {{{price}}} {{{currency}}}
+  - Previous Close: {{{previousClose}}}
+  - Change: {{{change}}} ({{{changePercent}}})
+  - Volume: {{{volume}}}
+  - 52 Week High: {{{week52High}}}
+  - 52 Week Low: {{{week52Low}}}
+  - Market Capitalization: {{{marketCap}}}
+  - P/E Ratio: {{{peRatio}}}
+  - P/B Ratio: {{{pbRatio}}}
+  - EPS: {{{eps}}}
+  - Dividend Yield: {{{dividendYield}}}
+  - Return on Equity (ROE): {{{roe}}}
+  - EBITDA: {{{ebitda}}}
 
-  Fundamental Data:
-  - Market Capitalization: {{{overview.MarketCapitalization}}}
-  - P/E Ratio: {{{overview.PERatio}}}
-  - P/B Ratio: {{{overview.PriceToBookRatio}}}
-  - EPS: {{{overview.EPS}}}
-  - Dividend Yield: {{{overview.DividendYield}}}
-  - Return on Equity (ROE): {{{overview.ReturnOnEquityTTM}}}
-  - EBITDA: {{{overview.EBITDA}}}
-  - 52 Week High: {{{overview.['52WeekHigh']}}}
-  - 52 Week Low: {{{overview.['52WeekLow']}}}
+  ## Financial Statement Highlights (Latest Annual Report)
+  ### Income Statement
+  - Total Revenue: {{{totalRevenue}}}
+  - Gross Profit: {{{grossProfit}}}
+  - Operating Income: {{{operatingIncome}}}
+  - Net Income: {{{netIncome}}}
+  ### Balance Sheet
+  - Total Assets: {{{totalAssets}}}
+  - Total Liabilities: {{{totalLiabilities}}}
+  - Total Shareholder Equity: {{{shareholderEquity}}}
+  ### Cash Flow
+  - Operating Cash Flow: {{{operatingCashflow}}}
+  - Capital Expenditures: {{{capitalExpenditures}}}
+  - Free Cash Flow: {{{freeCashFlow}}}
+  
+  ## Your Task:
+  Based on ALL the provided data, perform a thorough fundamental analysis.
 
-<<<<<<< HEAD
-  **Primary Data Source (Real-Time Financial Data):**
-  \`\`\`json
-  {{{companyOverview}}}
-  \`\`\`
-=======
-  Follow these guidelines for the analysis:
-  - Based on all the provided data, provide a detailed analysis covering the company's business model, market leadership, financial health, and growth prospects.
-  - List at least three distinct "pros" (strengths or opportunities), using the provided data to support them.
-  - List at least three distinct "cons" (weaknesses or risks), using the provided data to support them.
-  - Provide a final recommendation: "buy", "sell", or "hold". Do not translate this field.
-  - All textual content (analysis, pros, cons) MUST be in the specified language.
-  - For the assetName in the output, use the 'Name' from the provided data.
-  - For the tickerSymbol in the output, use the 'Symbol' from the provided data.
-  - Emphasize that this is not personalized investment advice and that investing involves risks.
->>>>>>> e51fb4d (I see this error with the app, reported by NextJS, please fix it. The er)
-
-  **Analysis Guidelines:**
-  1.  **Base Your Analysis on Provided Data:** Use the JSON data above as the single source of truth for all financial metrics and company information.
-  2.  **Comprehensive Analysis:** Generate a detailed analysis covering the company's business model (from the 'Description' field), market position, financial performance, and growth prospects. Reference key metrics from the data, such as 'PERatio', 'PriceToBookRatio', 'DividendYield', 'ReturnOnEquityTTM', and 'QuarterlyRevenueGrowthYOY'.
-  3.  **Pros and Cons:** List at least three distinct "pros" (strengths/opportunities) and three distinct "cons" (weaknesses/risks). These must be directly supported by the provided data.
-  4.  **Recommendation:** Conclude with a clear recommendation: "buy", "sell", or "hold". This field MUST NOT be translated.
-  5.  **Language:** All textual output (analysis, pros, cons) must be in the specified language ({{{locale}}}).
-  6.  **Disclaimer:** Emphasize that this is not personalized investment advice and that investing involves risks.
-
-  Format your response as a JSON object that matches the AnalyzeInvestmentOutputSchema schema. Adhere to the descriptions in the schema closely. If the provided data is sparse or empty, indicate that an analysis could not be performed due to lack of data.
+  1.  **Analysis Section:** Write a detailed analysis (4-6 sentences). Cover the company's business model, market position, profitability, financial health (debt levels, asset base), and cash flow generation. Integrate the financial statement data to support your points.
+  2.  **Pros Section:** List at least three distinct "pros" (strengths, opportunities). Each point MUST be justified with specific data from the financial statements or key metrics provided (e.g., "Strong profitability demonstrated by a high Net Income of X," or "Healthy balance sheet with Total Assets far exceeding Total Liabilities.").
+  3.  **Cons Section:** List at least three distinct "cons" (weaknesses, risks). Each point MUST be justified with specific data (e.g., "High debt levels are a concern, as shown by the Total Liabilities of Y," or "Negative Free Cash Flow indicates potential issues with funding operations.").
+  4.  **Recommendation:** Provide a final, one-word recommendation: "buy", "sell", or "hold". Do not translate this field.
+  5.  **Language & Formatting:** All textual content (analysis, pros, cons) MUST be in the specified language ({{{locale}}}). The final output must be a single, valid JSON object matching the output schema.
   `,
 });
 
@@ -124,41 +138,60 @@ const analyzeInvestmentFlow = ai.defineFlow(
     outputSchema: AnalyzeInvestmentOutputSchema,
   },
   async (input) => {
-<<<<<<< HEAD
-    const overview = await getCompanyOverview(input.tickerSymbol);
+    const financialData = await getFinancialData(input.tickerSymbol);
 
-    if (!overview) {
-        throw new Error(`Could not retrieve financial data for ticker: ${input.tickerSymbol}. The symbol may be invalid or the data provider is unavailable.`);
-    }
+    const latestAnnualIncomeStatement = financialData.incomeStatement?.annualReports?.[0];
+    const latestAnnualBalanceSheet = financialData.balanceSheet?.annualReports?.[0];
+    const latestAnnualCashFlow = financialData.cashFlow?.annualReports?.[0];
+    
+    const operatingCashflow = parseFloat(latestAnnualCashFlow?.operatingCashflow ?? '0');
+    const capitalExpenditures = parseFloat(latestAnnualCashFlow?.capitalExpenditures ?? '0');
+    const freeCashFlow = operatingCashflow - capitalExpenditures;
 
-    const {output} = await prompt({
-        ...input,
-        companyOverview: JSON.stringify(overview, null, 2),
-    });
-
+    const cleanedData = {
+        locale: input.locale,
+        // Overview
+        assetName: financialData.overview.Name,
+        tickerSymbol: financialData.overview.Symbol,
+        exchange: financialData.overview.Exchange ?? 'N/A',
+        sector: financialData.overview.Sector ?? 'N/A',
+        industry: financialData.overview.Industry ?? 'N/A',
+        description: financialData.overview.Description ?? 'No description available.',
+        currency: financialData.overview.Currency ?? 'N/A',
+        marketCap: financialData.overview.MarketCapitalization ?? 'N/A',
+        peRatio: financialData.overview.PERatio ?? 'N/A',
+        pbRatio: financialData.overview.PriceToBookRatio ?? 'N/A',
+        eps: financialData.overview.EPS ?? 'N/A',
+        dividendYield: financialData.overview.DividendYield ?? 'N/A',
+        roe: financialData.overview.ReturnOnEquityTTM ?? 'N/A',
+        ebitda: financialData.overview.EBITDA ?? 'N/A',
+        week52High: financialData.overview['52WeekHigh'] ?? 'N/A',
+        week52Low: financialData.overview['52WeekLow'] ?? 'N/A',
+        // Quote
+        price: financialData.quote['Global Quote']['05. price'] ?? 'N/A',
+        previousClose: financialData.quote['Global Quote']['08. previous close'] ?? 'N/A',
+        change: financialData.quote['Global Quote']['09. change'] ?? 'N/A',
+        changePercent: financialData.quote['Global Quote']['10. change percent'] ?? 'N/A',
+        volume: financialData.quote['Global Quote']['06. volume'] ?? 'N/A',
+        // Financial Statements
+        totalRevenue: latestAnnualIncomeStatement?.totalRevenue ?? 'N/A',
+        grossProfit: latestAnnualIncomeStatement?.grossProfit ?? 'N/A',
+        operatingIncome: latestAnnualIncomeStatement?.operatingIncome ?? 'N/A',
+        netIncome: latestAnnualIncomeStatement?.netIncome ?? 'N/A',
+        totalAssets: latestAnnualBalanceSheet?.totalAssets ?? 'N/A',
+        totalLiabilities: latestAnnualBalanceSheet?.totalLiabilities ?? 'N/A',
+        shareholderEquity: latestAnnualBalanceSheet?.totalShareholderEquity ?? 'N/A',
+        operatingCashflow: latestAnnualCashFlow?.operatingCashflow ?? 'N/A',
+        capitalExpenditures: latestAnnualCashFlow?.capitalExpenditures ?? 'N/A',
+        freeCashFlow: isNaN(freeCashFlow) ? 'N/A' : freeCashFlow.toString(),
+    };
+    
+    const { output } = await prompt(cleanedData);
+    
     if (!output) {
       throw new Error('The AI failed to generate an analysis.');
     }
-    
-    // Use the accurate name from the API response
-    return {
-        ...output,
-        assetName: overview.Name || output.assetName,
-        tickerSymbol: input.tickerSymbol,
-    };
-=======
-    const financialData = await getFinancialData(input.tickerSymbol);
 
-    if (!financialData || !financialData.quote['Global Quote']) {
-      throw new Error(`Could not retrieve financial data for ${input.tickerSymbol}. The symbol might be invalid or the API limit may have been reached.`);
-    }
-    
-    const { output } = await prompt({
-        locale: input.locale,
-        overview: financialData.overview,
-        quote: financialData.quote['Global Quote'],
-    });
-    return output!;
->>>>>>> e51fb4d (I see this error with the app, reported by NextJS, please fix it. The er)
+    return output;
   }
 );
