@@ -158,6 +158,7 @@ export default function InvestmentFilters({ setSuggestions, setAnalysis, setIsLo
                               </FormControl>
                               <SelectContent>
                                 <SelectItem value="stocks">{t('assetTypeStocks')}</SelectItem>
+                                <SelectItem value="crypto">{t('assetTypeCrypto')}</SelectItem>
                                 <SelectItem value="currencies">{t('assetTypeCurrencies')}</SelectItem>
                                 <SelectItem value="funds">{t('assetTypeFunds')}</SelectItem>
                                 <SelectItem value="fixed income">{t('assetTypeFixedIncome')}</SelectItem>
