@@ -1,6 +1,6 @@
 import type {Metadata} from 'next';
-import {NextIntlClientProvider, useMessages} from 'next-intl';
-import {getTranslator} from 'next-intl/server';
+import {NextIntlClientProvider} from 'next-intl';
+import {getMessages, getTranslations} from 'next-intl/server';
 import '../globals.css';
 import { Toaster } from "@/components/ui/toaster";
 
@@ -10,7 +10,7 @@ type Props = {
 };
 
 export async function generateMetadata({params: {locale}}: Props): Promise<Metadata> {
-  const t = await getTranslator(locale, 'Metadata');
+  const t = await getTranslations({locale, namespace: 'Metadata'});
  
   return {
     title: t('title'),
@@ -18,11 +18,11 @@ export async function generateMetadata({params: {locale}}: Props): Promise<Metad
   };
 }
 
-export default function LocaleLayout({
+export default async function LocaleLayout({
   children,
   params: {locale},
 }: Readonly<Props>) {
-  const messages = useMessages();
+  const messages = await getMessages();
 
   return (
     <html lang={locale} className="dark">
