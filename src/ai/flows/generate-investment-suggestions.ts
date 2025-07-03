@@ -66,8 +66,9 @@ const prompt = ai.definePrompt({
 >>>>>>> 59f0772 (Adicione também criptomoedas nas sugestões)
 
   The content of the rationale depends on the Asset Type:
-  - If the Asset Type is "stocks", "funds", or "fixed income", the rationale should include key financial metrics such as P/E, P/B, and Dividend Yield.
-  - If the Asset Type is "crypto" or "currencies", the rationale should include information relevant to that asset class, such as project fundamentals, market capitalization, and recent performance for crypto, or economic factors for currencies.
+  - If the Asset Type is "stocks", "funds", or "fixed income", the rationale MUST include a mix of fundamental analysis metrics such as P/E Ratio, P/B Ratio, Dividend Yield, ROE (Return on Equity), and EBITDA.
+  - If the Asset Type is "crypto", the rationale MUST include information relevant to that asset class, such as project fundamentals, tokenomics, market capitalization, and recent performance.
+  - If the Asset Type is "currencies", the rationale should include economic factors like interest rates, inflation, and geopolitical events.
 
   Format your response as a JSON object that matches the GenerateInvestmentSuggestionsOutputSchema schema. Adhere to the descriptions in the schema closely.
   `,

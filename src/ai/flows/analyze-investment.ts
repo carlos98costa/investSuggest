@@ -10,7 +10,11 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+<<<<<<< HEAD
 import { getCompanyOverview } from '@/services/alpha-vantage';
+=======
+import { getFinancialData, CompanyOverviewSchema, GlobalQuoteSchema } from '@/services/alpha-vantage';
+>>>>>>> e51fb4d (I see this error with the app, reported by NextJS, please fix it. The er)
 
 const AnalyzeInvestmentInputSchema = z.object({
   tickerSymbol: z.string().describe('The ticker symbol of the asset to analyze.'),
@@ -37,19 +41,69 @@ export async function analyzeInvestment(input: AnalyzeInvestmentInput): Promise<
   return analyzeInvestmentFlow(input);
 }
 
+<<<<<<< HEAD
 const prompt = ai.definePrompt({
   name: 'analyzeInvestmentPrompt',
   input: {schema: AnalyzeInvestmentPromptInputSchema}, // Use the new extended schema
   output: {schema: AnalyzeInvestmentOutputSchema},
   prompt: `You are an expert AI investment analyst. Your primary task is to provide a detailed, data-driven analysis for the specified stock ticker using the real-time financial data provided.
+=======
+const PromptInputSchema = z.object({
+    locale: z.string(),
+    overview: CompanyOverviewSchema,
+    quote: GlobalQuoteSchema.shape['Global Quote']
+});
 
-  Ticker Symbol: {{{tickerSymbol}}}
+const prompt = ai.definePrompt({
+  name: 'analyzeInvestmentWithDataPrompt',
+  input: {schema: PromptInputSchema},
+  output: {schema: AnalyzeInvestmentOutputSchema},
+  prompt: `You are an expert AI investment analyst. Provide a detailed analysis for the specified stock ticker using the provided real-time and fundamental data.
+>>>>>>> e51fb4d (I see this error with the app, reported by NextJS, please fix it. The er)
+
   Language for response: {{{locale}}}
+  
+  Asset Information:
+  - Company Name: {{{overview.Name}}}
+  - Ticker Symbol: {{{overview.Symbol}}}
+  - Exchange: {{{overview.Exchange}}}
+  - Sector: {{{overview.Sector}}}
+  - Industry: {{{overview.Industry}}}
+  - Description: {{{overview.Description}}}
 
+  Real-time Quote:
+  - Current Price: {{{quote.['05. price']}}} {{{overview.Currency}}}
+  - Previous Close: {{{quote.['08. previous close']}}}
+  - Change: {{{quote.['09. change']}}} ({{{quote.['10. change percent']}}})
+  - Volume: {{{quote.['06. volume']}}}
+
+  Fundamental Data:
+  - Market Capitalization: {{{overview.MarketCapitalization}}}
+  - P/E Ratio: {{{overview.PERatio}}}
+  - P/B Ratio: {{{overview.PriceToBookRatio}}}
+  - EPS: {{{overview.EPS}}}
+  - Dividend Yield: {{{overview.DividendYield}}}
+  - Return on Equity (ROE): {{{overview.ReturnOnEquityTTM}}}
+  - EBITDA: {{{overview.EBITDA}}}
+  - 52 Week High: {{{overview.['52WeekHigh']}}}
+  - 52 Week Low: {{{overview.['52WeekLow']}}}
+
+<<<<<<< HEAD
   **Primary Data Source (Real-Time Financial Data):**
   \`\`\`json
   {{{companyOverview}}}
   \`\`\`
+=======
+  Follow these guidelines for the analysis:
+  - Based on all the provided data, provide a detailed analysis covering the company's business model, market leadership, financial health, and growth prospects.
+  - List at least three distinct "pros" (strengths or opportunities), using the provided data to support them.
+  - List at least three distinct "cons" (weaknesses or risks), using the provided data to support them.
+  - Provide a final recommendation: "buy", "sell", or "hold". Do not translate this field.
+  - All textual content (analysis, pros, cons) MUST be in the specified language.
+  - For the assetName in the output, use the 'Name' from the provided data.
+  - For the tickerSymbol in the output, use the 'Symbol' from the provided data.
+  - Emphasize that this is not personalized investment advice and that investing involves risks.
+>>>>>>> e51fb4d (I see this error with the app, reported by NextJS, please fix it. The er)
 
   **Analysis Guidelines:**
   1.  **Base Your Analysis on Provided Data:** Use the JSON data above as the single source of truth for all financial metrics and company information.
@@ -70,6 +124,7 @@ const analyzeInvestmentFlow = ai.defineFlow(
     outputSchema: AnalyzeInvestmentOutputSchema,
   },
   async (input) => {
+<<<<<<< HEAD
     const overview = await getCompanyOverview(input.tickerSymbol);
 
     if (!overview) {
@@ -91,5 +146,19 @@ const analyzeInvestmentFlow = ai.defineFlow(
         assetName: overview.Name || output.assetName,
         tickerSymbol: input.tickerSymbol,
     };
+=======
+    const financialData = await getFinancialData(input.tickerSymbol);
+
+    if (!financialData || !financialData.quote['Global Quote']) {
+      throw new Error(`Could not retrieve financial data for ${input.tickerSymbol}. The symbol might be invalid or the API limit may have been reached.`);
+    }
+    
+    const { output } = await prompt({
+        locale: input.locale,
+        overview: financialData.overview,
+        quote: financialData.quote['Global Quote'],
+    });
+    return output!;
+>>>>>>> e51fb4d (I see this error with the app, reported by NextJS, please fix it. The er)
   }
 );
