@@ -31,8 +31,8 @@
     "riskLevelHigh": "High",
     "sectorLabel": "Sector (Optional)",
     "sectorPlaceholder": "e.g., Technology, Healthcare, Energy",
-    "tickerLabel": "Ticker Symbol",
-    "tickerPlaceholder": "e.g., GOOGL, AAPL, MSFT",
+    "assetNameLabel": "Asset Name / Symbol",
+    "assetNamePlaceholder": "e.g., GOOGL, Bitcoin, USD/BRL",
     "investmentAmountLabel": "Investment Amount",
     "investmentAmountPlaceholder": "e.g., 10000",
     "submitButtonSuggestions": "Get Suggestions",
@@ -40,7 +40,7 @@
     "submitButtonPortfolio": "Build Portfolio",
     "toastErrorTitle": "Error",
     "noSuggestionsError": "The AI returned no suggestions for these criteria. Please try a different combination.",
-    "noAnalysisError": "The AI could not analyze this ticker. Please check the symbol and try again.",
+    "noAnalysisError": "The AI could not analyze this asset. Please check the name and try again.",
     "noPortfolioError": "The AI could not generate a portfolio for these criteria. Please try a different combination."
   },
   "SuggestionCard": {

@@ -31,8 +31,8 @@
     "riskLevelHigh": "Alto",
     "sectorLabel": "Setor (Opcional)",
     "sectorPlaceholder": "ex: Tecnologia, Saúde, Energia",
-    "tickerLabel": "Símbolo do Ticker",
-    "tickerPlaceholder": "ex: GOOGL, AAPL, MSFT",
+    "assetNameLabel": "Nome do Ativo / Símbolo",
+    "assetNamePlaceholder": "ex: GOOGL, Bitcoin, USD/BRL",
     "investmentAmountLabel": "Valor do Investimento",
     "investmentAmountPlaceholder": "ex: 10000",
     "submitButtonSuggestions": "Obter Sugestões",
@@ -40,7 +40,7 @@
     "submitButtonPortfolio": "Criar Carteira",
     "toastErrorTitle": "Erro",
     "noSuggestionsError": "A IA não retornou sugestões para estes critérios. Por favor, tente uma combinação diferente.",
-    "noAnalysisError": "A IA não conseguiu analisar este ticker. Por favor, verifique o símbolo e tente novamente.",
+    "noAnalysisError": "A IA não conseguiu analisar este ativo. Por favor, verifique o nome e tente novamente.",
     "noPortfolioError": "A IA não conseguiu gerar uma carteira para estes critérios. Por favor, tente uma combinação diferente."
   },
   "SuggestionCard": {

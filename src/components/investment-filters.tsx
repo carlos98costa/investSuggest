@@ -29,7 +29,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { getInvestmentSuggestions, getInvestmentAnalysis, getPortfolioSuggestion } from "@/app/actions";
 import type { GenerateInvestmentSuggestionsOutput } from "@/ai/flows/generate-investment-suggestions";
-import type { AnalyzeInvestmentOutput } from "@/ai/flows/analyze-investment";
+import type { AnalyzeInvestmentOutput } from "@/ai/schemas";
 import type { GeneratePortfolioSuggestionOutput } from "@/ai/flows/generate-portfolio-suggestion";
 
 
@@ -61,6 +61,7 @@ export default function InvestmentFilters({ setSuggestions, setAnalysis, setPort
     defaultValues: {
       sector: "",
       tickerSymbol: "",
+      investmentAmount: undefined
     },
   });
 
@@ -94,17 +95,17 @@ export default function InvestmentFilters({ setSuggestions, setAnalysis, setPort
           setError(t('noSuggestionsError'));
         }
       } else if (activeTab === "analysis") {
-        if (!values.tickerSymbol) {
-            setError("Ticker symbol is required for analysis.");
+        if (!values.tickerSymbol || !values.assetType) {
+            setError("Asset type and name/symbol are required for analysis.");
             toast({
                 variant: "destructive",
                 title: t('toastErrorTitle'),
-                description: "Ticker symbol is required for analysis.",
+                description: "Asset type and name/symbol are required for analysis.",
             });
             setIsLoading(false);
             return;
         }
-        const result = await getInvestmentAnalysis({ tickerSymbol: values.tickerSymbol, locale });
+        const result = await getInvestmentAnalysis({ tickerSymbol: values.tickerSymbol, assetType: values.assetType, locale });
         if (result) {
           setAnalysis(result);
         } else {
@@ -232,19 +233,45 @@ export default function InvestmentFilters({ setSuggestions, setAnalysis, setPort
                 </div>
               </TabsContent>
               <TabsContent value="analysis" className="m-0 p-0">
-                 <FormField
-                    control={form.control}
-                    name="tickerSymbol"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="flex items-center"><LineChart className="mr-2 h-4 w-4" />{t('tickerLabel')}</FormLabel>
-                        <FormControl>
-                          <Input placeholder={t('tickerPlaceholder')} {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <FormField
+                      control={form.control}
+                      name="assetType"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="flex items-center"><BarChart className="mr-2 h-4 w-4" />{t('assetTypeLabel')}</FormLabel>
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder={t('assetTypePlaceholder')} />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="stocks">{t('assetTypeStocks')}</SelectItem>
+                              <SelectItem value="crypto">{t('assetTypeCrypto')}</SelectItem>
+                              <SelectItem value="currencies">{t('assetTypeCurrencies')}</SelectItem>
+                              <SelectItem value="funds">{t('assetTypeFunds')}</SelectItem>
+                              <SelectItem value="fixed income">{t('assetTypeFixedIncome')}</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="tickerSymbol"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="flex items-center"><LineChart className="mr-2 h-4 w-4" />{t('assetNameLabel')}</FormLabel>
+                          <FormControl>
+                            <Input placeholder={t('assetNamePlaceholder')} {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                 </div>
               </TabsContent>
               <TabsContent value="portfolio" className="m-0 p-0">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

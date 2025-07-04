@@ -10,6 +10,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { getFromCache, setInCache } from '@/lib/cache';
 
 const GenerateInvestmentSuggestionsInputSchema = z.object({
   assetType: z.string().describe('The type of asset to generate suggestions for (e.g., stocks, crypto, currencies, funds, fixed income).'),
@@ -72,7 +73,22 @@ const generateInvestmentSuggestionsFlow = ai.defineFlow(
     outputSchema: GenerateInvestmentSuggestionsOutputSchema,
   },
   async input => {
+    const cacheKey = `suggestions-${input.assetType}-${input.riskLevel}-${input.sector || 'any'}-${input.locale}`;
+    const cachedResult = getFromCache<GenerateInvestmentSuggestionsOutput>(cacheKey);
+
+    if (cachedResult) {
+      console.log(`[Cache] HIT for ${cacheKey}`);
+      return cachedResult;
+    }
+    console.log(`[Cache] MISS for ${cacheKey}`);
+
     const {output} = await prompt(input);
-    return output!;
+
+    if (!output) {
+      throw new Error('The AI failed to generate suggestions.');
+    }
+
+    setInCache(cacheKey, output);
+    return output;
   }
 );

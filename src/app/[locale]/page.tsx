@@ -10,7 +10,7 @@ import AnalysisResultCard from "@/components/analysis-result-card";
 import PortfolioResultCard from "@/components/portfolio-result-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { GenerateInvestmentSuggestionsOutput } from "@/ai/flows/generate-investment-suggestions";
-import type { AnalyzeInvestmentOutput } from "@/ai/flows/analyze-investment";
+import type { AnalyzeInvestmentOutput } from "@/ai/schemas";
 import type { GeneratePortfolioSuggestionOutput } from "@/ai/flows/generate-portfolio-suggestion";
 import { Card, CardContent } from "@/components/ui/card";
 import LanguageSwitcher from "@/components/language-switcher";

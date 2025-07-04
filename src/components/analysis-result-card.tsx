@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import type { AnalyzeInvestmentOutput } from "@/ai/flows/analyze-investment";
+import type { AnalyzeInvestmentOutput } from "@/ai/schemas";
 
 interface AnalysisResultCardProps {
   analysis: AnalyzeInvestmentOutput;
